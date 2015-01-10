@@ -3,19 +3,11 @@
 
 #include "ofMain.h"
 #include "flSegment.h"
+#include "flTools.h"
 
 class PointGroup {
 	private:
-		int ident;
-		int segCount;
-		int polka;
-		float fluct;
-		vector<Segment> segments;
-		bool putCenter;
-		bool centered;
-		bool firstPoint;
-		ofVec2f center;
-		ofVec2f previousPos;
+	
 
 		void startSegment(ofVec2f _p);
 		void endSegment(ofVec2f _p);
@@ -36,6 +28,17 @@ class PointGroup {
 		void nudgeLast(ofVec2f _n);
 		ofVec2f findNear(float _d, ofVec2f _p);
 
+		//////////// was private
+		ofVec2f previousPos;
+		int ident;
+		int segCount;
+		int polka;
+		float fluct;
+		vector<Segment> segments;
+		bool putCenter;
+		bool centered;
+		bool firstPoint;
+		ofVec2f center;
 };
 
 #endif

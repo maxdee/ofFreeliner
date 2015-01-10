@@ -11,3 +11,7 @@ float floatWrap(float _f){
 	else if(_f < 0) _f += 1;
 	return _f;
 }
+
+ofVec3f vec2to3(ofVec2f _v){
+	return ofVec3f(_v.x, _v.y, 0);
+}

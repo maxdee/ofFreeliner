@@ -1,6 +1,6 @@
 
 #include "flPointGroup.h"
-#include "flTools.h"
+
 
 PointGroup::PointGroup(){
 
@@ -128,45 +128,48 @@ void PointGroup::gui(ofVec2f _p, ofTrueTypeFont _tt){
 		ofSetColor(255);
 		ofLine(_p, previousPos); 
 	}
+
+	ofSetColor(255);
 	ofVec2f tag;
 	if(centered) tag = center;
 	else if(segCount > 0) tag = segments[0].getPointA();
+	else if(!firstPoint) tag = previousPos;
 	else tag = _p;
 
 	glLineWidth(1);
 	ofCircle(tag.x, tag.y, 10);
-	_tt.drawString(ofToString(ident), tag.x-(25+(ident/10)*12), tag.y+5);
+	_tt.drawString(ofToString(ident), tag.x-(25+(ident>9)*12), tag.y+7);
 	ofPopStyle();
 }
 
 
 
 void PointGroup::decorate(float _f){
-	if(segCount > 0){
-		fluct += 0.01;
-		fluct = floatWrap(fluct);
-		glLineWidth(2);
-		ofEnableAntiAliasing();
-		ofEnableSmoothing();
-		ofVec2f pA;
-		ofVec2f pB;
-		for(int i = 0; i <= segCount; i++) {
-			pA.set(segments[i].getPointA());
-			pB.set(segments[i].getPointB());
+	// if(segCount > 0){
+	// 	fluct += 0.01;
+	// 	fluct = floatWrap(fluct);
+	// 	glLineWidth(2);
+	// 	ofEnableAntiAliasing();
+	// 	ofEnableSmoothing();
+	// 	ofVec2f pA;
+	// 	ofVec2f pB;
+	// 	for(int i = 0; i <= segCount; i++) {
+	// 		pA.set(segments[i].getPointA());
+	// 		pB.set(segments[i].getPointB());
 			
-			ofNoFill();  
-			ofSetColor(255);
-			for(int j = 0; j < 100; j++){
-				float f = float(j)/100;
-				ofSetColor(ofFloatColor(abs(sin(f+fluct)), cos(f-fluct), abs(tan(f-fluct))));
-				pA.interpolate(center, floatWrap(f+fluct));
-				pB.interpolate(center, floatWrap(f+fluct));
-				ofLine(pA.getRotated(sin(f)*360, center), pB.getRotated(cos(f)*360, center));
-				//cout << pA << endl;
-			}
+	// 		ofNoFill();  
+	// 		ofSetColor(255);
+	// 		for(int j = 0; j < 100; j++){
+	// 			float f = float(j)/100;
+	// 			ofSetColor(ofFloatColor(abs(sin(f+fluct)), cos(f-fluct), abs(tan(f-fluct))));
+	// 			pA.interpolate(center, floatWrap(f+fluct));
+	// 			pB.interpolate(center, floatWrap(f+fluct));
+	// 			ofLine(pA.getRotated(sin(f)*360, center), pB.getRotated(cos(f)*360, center));
+	// 			//cout << pA << endl;
+	// 		}
 			
-		}
-	}
+	// 	}
+	// }
 }
 
 

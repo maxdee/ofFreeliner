@@ -13,6 +13,7 @@ class Freeliner {
 		float lerp;
 		int groupCount;
 		int focusGroup;
+		int prevFocusGroup;
 
 		vector<PointGroup> pointGroups;
 		
@@ -24,7 +25,6 @@ class Freeliner {
 		bool snapping;
 		bool snapped;
 		int snapDist;
-		Point *snappedTo;
 
 		void addGroup();
 		void cycleGroups();
@@ -40,6 +40,14 @@ class Freeliner {
 		bool valueBool(bool _b);
 		int valueInt(int _i);
 		map<char, string> keyMap;
+
+		void numMaker(int _k);
+		void makeNumber();
+		string numberBuff;
+		void numberDispatch(int _n);
+		void escape();
+
+		Decorator deco;
 
 	public:
 		Freeliner();

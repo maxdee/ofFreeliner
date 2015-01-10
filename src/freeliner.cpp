@@ -5,7 +5,8 @@
 Freeliner::Freeliner(){
 	cout << "alc's ofFreeliner version : " << version << endl;
 	focusGroup = -1;
-	groupCount = 0;
+	prevFocusGroup = -1;
+	groupCount = -1;
 	shifted = false;
 	ctrled = false;
 	lerp = 0.0;
@@ -18,9 +19,15 @@ Freeliner::Freeliner(){
 
 	keyMap['.'] = "snapping";
 	keyMap['c'] = "placeCenter";
+	keyMap['f'] = "fillColor";
+	keyMap['s'] = "size";
 	keyMap['t'] = "tapTempo";
 	keyMap['n'] = "newGroup";
+	keyMap['q'] = "strokeColor";
+	keyMap['w'] = "strokeWidth";
+	numberBuff = "";
 
+	deco = Decorator();
 }
 
 
@@ -46,19 +53,33 @@ void Freeliner::addGroup(){
 }
 
 void Freeliner::cycleGroups(){
-	if(shifted) focusGroup--;
-	else focusGroup++;
-	focusGroup = wrap(focusGroup, groupCount);
+	if(focusGroup == -1){
+		focusGroup = prevFocusGroup;
+	}
+	else {
+		if(shifted) focusGroup--;
+		else focusGroup++;
+		focusGroup = wrap(focusGroup, groupCount);
+	}
 	cout << "freeliner.cpp: focus cycle to :  " << focusGroup << endl;
 }
 
 
 void Freeliner::decorate(){
-	vector<PointGroup>::iterator this_group;
-	for(this_group = pointGroups.begin(); this_group != pointGroups.end(); this_group++) {
-		this_group->decorate(lerp);
+	// vector<PointGroup>::iterator this_group;
+	// for(this_group = pointGroups.begin(); this_group != pointGroups.end(); this_group++) {
+	// 	
+	// }
+	if(groupCount >= 0){
+		for(int i = 0; i <= groupCount; i++){
+			deco.decorate(pointGroups[i], lerp);
+		}
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////////
+///////////// Snapping and friends
+//////////////////////////////////////////////////////////////////////////////
 
 void Freeliner::mouseSnapping(){
 	ofVec2f tmp;
@@ -105,7 +126,7 @@ void Freeliner::nudger(int _i){
 //////////////////////////////////////////////////////////////////////////////
 
 void Freeliner::keyPress(int _k){
-	//cout << "Key pressed " << _k << endl;
+	cout << "Key pressed " << _k << endl;
 	//distribute key to group
 	if(focusGroup > -1){
 		pointGroups[focusGroup].keyPress(_k);
@@ -114,10 +135,13 @@ void Freeliner::keyPress(int _k){
 	if(_k == 9) cycleGroups();
 	else if(_k == 2305) shifted = true;
 	else if(_k == 769) ctrled = true;
+	else if(_k == 27) escape();
 	else if(_k == 357) nudger(0);
 	else if(_k == 359) nudger(1);
 	else if(_k == 356) nudger(2);
 	else if(_k == 358) nudger(3);
+	else if(_k == 13) makeNumber();
+	else if(_k >= 48 && _k <= 57) numMaker(_k);
 	else if(isMapped(_k)){
 		if(_k == 'n') addGroup();
 		else if(_k == '.') snapping = valueBool(!snapping);
@@ -125,14 +149,6 @@ void Freeliner::keyPress(int _k){
 	}
 	else cout << "freeliner.cpp: not mapped? " << char(_k) << endl;
 	//cout << editThing << ' ' << valueGiven << endl;
-}
-
-bool Freeliner::isMapped(char _k){
-	if(keyMap.count(_k)>0){
-		editThing = keyMap[_k];
-		return true;
-	}
-	else return false;
 }
 
 void Freeliner::keyRelease(int _k){
@@ -153,6 +169,39 @@ void Freeliner::mousePress(int _b){
 	if(focusGroup > -1){
 		pointGroups[focusGroup].mousePress(_b, cursor);
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////////
+///////////// input tools
+//////////////////////////////////////////////////////////////////////////////
+void Freeliner::escape(){
+	prevFocusGroup = focusGroup;
+	focusGroup = -1;
+	numberBuff = "";
+}
+
+void Freeliner::numMaker(int _k){
+	numberBuff += _k;
+	valueGiven = numberBuff;
+}
+
+void Freeliner::makeNumber(){
+	numberDispatch(ofToInt(numberBuff));
+	numberBuff = ""; 
+}
+
+void Freeliner::numberDispatch(int _n){
+	cout << "Dispatching: " << _n << endl;
+}
+
+
+
+bool Freeliner::isMapped(char _k){
+	if(keyMap.count(_k)>0){
+		editThing = keyMap[_k];
+		return true;
+	}
+	else return false;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -184,5 +233,6 @@ void Freeliner::gui(){
 	}
 	ofSetColor(255);
 	font.drawString(ofToString(ofGetFrameRate()), 10, 30);
-	font.drawString((editThing + valueGiven), 10, 50);
+	font.drawString((editThing +" "+ valueGiven), 10, 50);
+	font.drawString("Group "+ofToString(focusGroup), 10, 70);
 }
