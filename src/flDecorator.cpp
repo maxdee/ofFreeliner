@@ -7,19 +7,19 @@ Decorator::Decorator(){
 	style.smoothing = false;
 	style.lineWidth = 1;
 
-	#ifdef TARGET_OPENGLES
-		shader.load("shaders_gles/noise.vert","shaders_gles/noise.frag");
-	#else
-		if(ofGetGLProgrammableRenderer()){
-			shader.load("shaders_gl3/noise.vert", "shaders_gl3/noise.frag");
-		}else{
-			shader.load("shaders/noise.vert", "shaders/noise.frag");
-		}
-	#endif
+	// #ifdef TARGET_OPENGLES
+	// 	shader.load("shaders_gles/noise.vert","shaders_gles/noise.frag");
+	// #else
+	// 	// if(ofGetGLProgrammableRenderer()){
+	// 	shader.load("shaders_gl3/noise.vert", "shaders_gl3/noise.frag");
+	// 	// }else{
+	// 	// 	shader.load("shaders/noise.vert", "shaders/noise.frag");
+	// 	// }
+	// #endif
 }
 
 void Decorator::decorate(PointGroup _pg, float _f){
-	shader.begin();
+	// shader.begin();
 	ofSetStyle(style);
 	if(_pg.segCount > 0){
 		fluct += 0.01;
@@ -41,5 +41,5 @@ void Decorator::decorate(PointGroup _pg, float _f){
 		mush.draw(OF_MESH_FILL);//WIREFRAME);
 		//mush.drawFaces();
 	}
-	shader.end();
+	// shader.end();
 }

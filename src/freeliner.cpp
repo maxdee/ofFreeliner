@@ -33,6 +33,7 @@ Freeliner::Freeliner(){
 
 void Freeliner::update(){
 	lerp += 0.01;
+	cout << "running: " << lerp << endl;
 }
 
 void Freeliner::draw(){
@@ -42,7 +43,7 @@ void Freeliner::draw(){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-///////////// Point Group management 
+///////////// Point Group management
 //////////////////////////////////////////////////////////////////////////////
 
 void Freeliner::addGroup(){
@@ -68,7 +69,7 @@ void Freeliner::cycleGroups(){
 void Freeliner::decorate(){
 	// vector<PointGroup>::iterator this_group;
 	// for(this_group = pointGroups.begin(); this_group != pointGroups.end(); this_group++) {
-	// 	
+	//
 	// }
 	if(groupCount >= 0){
 		for(int i = 0; i <= groupCount; i++){
@@ -84,13 +85,13 @@ void Freeliner::decorate(){
 void Freeliner::mouseSnapping(){
 	ofVec2f tmp;
 	tmp.set(0,0);
-	
+
 	vector<PointGroup>::iterator this_group;
 	for(this_group = pointGroups.begin(); this_group != pointGroups.end(); this_group++) {
 		tmp.set(this_group->findNear(snapDist, cursor));
 		if(tmp.x != -1) break;
 	}
-	
+
 	if(tmp.x != -1){
 		cursor.set(tmp);
 		snapped = true;
@@ -187,7 +188,7 @@ void Freeliner::numMaker(int _k){
 
 void Freeliner::makeNumber(){
 	numberDispatch(ofToInt(numberBuff));
-	numberBuff = ""; 
+	numberBuff = "";
 }
 
 void Freeliner::numberDispatch(int _n){
@@ -220,7 +221,7 @@ int Freeliner::valueInt(int _i){
 }
 
 //////////////////////////////////////////////////////////////////////////////
-///////////// gui 
+///////////// gui
 //////////////////////////////////////////////////////////////////////////////
 
 void Freeliner::gui(){

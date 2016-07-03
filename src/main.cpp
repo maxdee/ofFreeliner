@@ -13,7 +13,7 @@ int main( ){
     	ofSetCurrentRenderer(ofGLProgrammableRenderer::TYPE);
 	#endif
 
-	ofSetupOpenGL(1024, 768, OF_FULLSCREEN);// OF_WINDOW);//OF_FULLSCREEN);
+	ofSetupOpenGL(1024, 768, OF_WINDOW);//OF_FULLSCREEN);
 	ofHideCursor();
 	ofSetWindowTitle("alcFreeliner - OF edition");
 	ofSetEscapeQuitsApp(false);
