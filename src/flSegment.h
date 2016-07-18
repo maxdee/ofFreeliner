@@ -7,7 +7,6 @@
 class Segment {
 	private:
 
-
 	public:
 		Segment(ofVec2f _a, ofVec2f _b);
 		Point pointA;

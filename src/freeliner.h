@@ -9,15 +9,15 @@
 
 class Freeliner {
 	private:
-		float version = 0.01; 
+		float version = 0.01;
 		float lerp;
 		int groupCount;
 		int focusGroup;
 		int prevFocusGroup;
 
 		vector<PointGroup> pointGroups;
-		
-		ofVec2f cursor;
+
+		ofVec3f cursor;
 
 		bool shifted;
 		bool ctrled;

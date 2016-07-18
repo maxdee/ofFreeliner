@@ -25,11 +25,11 @@ void PointGroup::init(int &_id){
 ///////////// Passed input
 //////////////////////////////////////////////////////////////////////////////
 
-void PointGroup::mousePress(int _b, ofVec2f _p){
+void PointGroup::mousePress(int _b, ofVec3f _p){
 
 	if (_b == 0 && putCenter) placeCenter(_p);
     else if (_b == 2 && putCenter) unCenter();
-    else if (_b == 0 && firstPoint) startSegment(_p); 
+    else if (_b == 0 && firstPoint) startSegment(_p);
     else if (_b == 0 && !firstPoint) endSegment(_p);
     else if (_b == 2) undo();
     else if (_b == 1) startSegment(_p);  //breakSegment(p);
@@ -47,18 +47,18 @@ void PointGroup::keyPress(int _k){
 ///////////// Point Group Management
 //////////////////////////////////////////////////////////////////////////////
 
-void PointGroup::startSegment(ofVec2f _p){
+void PointGroup::startSegment(ofVec3f _p){
 	previousPos = _p;
 	firstPoint = false;
 }
 
-void PointGroup::endSegment(ofVec2f _p){
+void PointGroup::endSegment(ofVec3f _p){
 	segments.push_back( Segment(previousPos, _p) );
 	segCount++;
 	previousPos = _p;
 }
 
-void PointGroup::placeCenter(ofVec2f _p){
+void PointGroup::placeCenter(ofVec3f _p){
 	cout << "PointGroup :" << segments.size() << endl;
 	center = _p;
 	centered = true;
@@ -74,7 +74,7 @@ void PointGroup::undo(){
 		segCount--;
 		if(segCount < 1){
 			previousPos.set(segments[segCount].getPointA());
-		} 
+		}
 		else previousPos.set(segments[segCount-1].getPointB());
 		segments.erase(segments.end());
 	}
@@ -82,22 +82,22 @@ void PointGroup::undo(){
 		centered = false;
 	}
 	else{
-		firstPoint = true;	
-		previousPos.set(0,0);
+		firstPoint = true;
+		previousPos.set(0,0,0);
 	}
-	
+
 }
 
-ofVec2f PointGroup::findNear(float _d, ofVec2f _p){
+ofVec3f PointGroup::findNear(float _d, ofVec3f _p){
 	vector<Segment>::iterator this_seg;
 	for(this_seg = segments.begin(); this_seg != segments.end(); this_seg++) {
 		if(this_seg->pointA.checkProx(_d, _p)) return this_seg->pointA.get();
 		else if(this_seg->pointB.checkProx(_d, _p)) return this_seg->pointB.get();
 	}
-	return ofVec2f(-1,-1);
+	return ofVec3f(-1,-1);
 }
 
-void PointGroup::snapNudge(float _d, ofVec2f _p, ofVec2f _n){
+void PointGroup::snapNudge(float _d, ofVec3f _p, ofVec3f _n){
 	vector<Segment>::iterator this_seg;
 	for(this_seg = segments.begin(); this_seg != segments.end(); this_seg++) {
 		if(this_seg->pointA.checkProx(_d, _p)) this_seg->pointA.nudge(_n);
@@ -105,7 +105,7 @@ void PointGroup::snapNudge(float _d, ofVec2f _p, ofVec2f _n){
 	}
 }
 
-void PointGroup::nudgeLast(ofVec2f _n){
+void PointGroup::nudgeLast(ofVec3f _n){
 	previousPos += _n;
 	segments[segCount-1].pointB.nudge(_n);
 }
@@ -113,10 +113,10 @@ void PointGroup::nudgeLast(ofVec2f _n){
 ///////////// gui and stuff
 //////////////////////////////////////////////////////////////////////////////
 
-void PointGroup::gui(ofVec2f _p, ofTrueTypeFont _tt){
+void PointGroup::gui(ofVec3f _p, ofTrueTypeFont _tt){
 	ofPushStyle();
 	glLineWidth(1);
-	ofNoFill();  
+	ofNoFill();
 	ofSetColor(100);
 	vector<Segment>::iterator this_seg;
 	for(this_seg = segments.begin(); this_seg != segments.end(); this_seg++) {
@@ -124,13 +124,13 @@ void PointGroup::gui(ofVec2f _p, ofTrueTypeFont _tt){
 	}
 	if(previousPos.x > 0.1){
 		glLineWidth(3);
-		ofNoFill();  
+		ofNoFill();
 		ofSetColor(255);
-		ofLine(_p, previousPos); 
+		ofLine(_p, previousPos);
 	}
 
 	ofSetColor(255);
-	ofVec2f tag;
+	ofVec3f tag;
 	if(centered) tag = center;
 	else if(segCount > 0) tag = segments[0].getPointA();
 	else if(!firstPoint) tag = previousPos;
@@ -151,13 +151,13 @@ void PointGroup::decorate(float _f){
 	// 	glLineWidth(2);
 	// 	ofEnableAntiAliasing();
 	// 	ofEnableSmoothing();
-	// 	ofVec2f pA;
-	// 	ofVec2f pB;
+	// 	ofVec3f pA;
+	// 	ofVec3f pB;
 	// 	for(int i = 0; i <= segCount; i++) {
 	// 		pA.set(segments[i].getPointA());
 	// 		pB.set(segments[i].getPointB());
-			
-	// 		ofNoFill();  
+
+	// 		ofNoFill();
 	// 		ofSetColor(255);
 	// 		for(int j = 0; j < 100; j++){
 	// 			float f = float(j)/100;
@@ -167,7 +167,7 @@ void PointGroup::decorate(float _f){
 	// 			ofLine(pA.getRotated(sin(f)*360, center), pB.getRotated(cos(f)*360, center));
 	// 			//cout << pA << endl;
 	// 		}
-			
+
 	// 	}
 	// }
 }
@@ -180,13 +180,13 @@ void PointGroup::decorate(float _f){
 	// 	for(int i = 0; i <= segCount; i++) {
 	// 		int ranA = i;
 	// 		int ranB = (i+3)%segCount;
-	// 		ofNoFill();  
+	// 		ofNoFill();
 	// 		for(int j = 0; j < 10; j++){
 	// 			float f = float(j)/10;
 	// 			ofSetColor(ofFloatColor(abs(sin(f+fluct)), cos(f-fluct), abs(tan(f-fluct))));
 	// 			ofLine(segments[ranA].getLerp(floatWrap(f+fluct)), segments[ranB].getLerp(floatWrap(f+fluct)));
 	// 		}
-			
+
 	// 	}
 	// }
 
@@ -196,7 +196,7 @@ void PointGroup::decorate(float _f){
 		// for(int i = 0; i < 2000; i++) {
 		// 	int ranA = int(ofRandom(segCount));
 		// 	int ranB = int(ofRandom(segCount));
-		// 	ofNoFill();  
+		// 	ofNoFill();
 		// 	ofSetColor(ofFloatColor(ofRandomuf(),ofRandomuf(),ofRandomuf()));
 		// 	ofLine(segments[ranA].getLerp(ofRandomuf()), segments[ranB].getLerp(ofRandomuf()));
 		// }

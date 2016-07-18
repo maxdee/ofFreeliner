@@ -5,18 +5,17 @@
 
 class Point {
 	private:
-		ofVec2f pos;
+		ofVec3f pos;
 		//second pos?
 
 	public:
-		Point();//ofVec2f _p);
+		Point();
 
-		void nudge(ofVec2f _p);
-		bool checkProx(int _d, ofVec2f _p);
+		void nudge(ofVec3f _p);
+		bool checkProx(int _d, ofVec3f _p);
+		void set(ofVec3f _p);
+		ofVec3f get();
 
-		void set(ofVec2f _p);
-		ofVec2f get();
-		
 };
 
 #endif

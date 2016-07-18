@@ -33,7 +33,7 @@ Freeliner::Freeliner(){
 
 void Freeliner::update(){
 	lerp += 0.01;
-	cout << "running: " << lerp << endl;
+	// cout << "running: " << lerp << endl;
 }
 
 void Freeliner::draw(){
@@ -83,7 +83,7 @@ void Freeliner::decorate(){
 //////////////////////////////////////////////////////////////////////////////
 
 void Freeliner::mouseSnapping(){
-	ofVec2f tmp;
+	ofVec3f tmp;
 	tmp.set(0,0);
 
 	vector<PointGroup>::iterator this_group;
@@ -101,14 +101,14 @@ void Freeliner::mouseSnapping(){
 
 
 void Freeliner::nudger(int _i){
-	ofVec2f dir;
+	ofVec3f dir;
 	if(_i == 0) dir.set(0,-1);
 	else if(_i == 1) dir.set(0,1);
 	else if(_i == 2) dir.set(-1,0);
 	else if(_i == 3) dir.set(1,0);
 	if(shifted) dir*=20;
 	if(snapped){
-		ofVec2f tmp;
+		ofVec3f tmp;
 		vector<PointGroup>::iterator this_group;
 		for(this_group = pointGroups.begin(); this_group != pointGroups.end(); this_group++) {
 			this_group->snapNudge(snapDist, cursor, dir);
@@ -160,7 +160,7 @@ void Freeliner::keyRelease(int _k){
 
 void Freeliner::mouseMove(int _x, int _y){
 	if(mouseEnabled){
-		cursor.set(_x, _y);
+		cursor.set(_x, _y, 0);
 		if(snapping) mouseSnapping();
 
 	}
