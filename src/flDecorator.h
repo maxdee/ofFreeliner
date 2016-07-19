@@ -14,7 +14,7 @@ class Decorator {
 	public:
 		Decorator();
 
-		void decorate(PointGroup _pg, float _f);
+		void decorate(ofFbo _fbo, PointGroup _pg, float _f);
 };
 
 #endif

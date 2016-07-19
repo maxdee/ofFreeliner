@@ -11,7 +11,9 @@ Decorator::Decorator(){
 
 }
 
-void Decorator::decorate(PointGroup _pg, float _f){
+void Decorator::decorate(ofFbo _fbo, PointGroup _pg, float _f){
+	_fbo.begin();
+
 	shader.begin();
 	shader.setUniform1f("time", ofGetElapsedTimef());
 
@@ -38,4 +40,5 @@ void Decorator::decorate(PointGroup _pg, float _f){
 		mush.drawFaces();
 	}
 	shader.end();
+	_fbo.end();
 }

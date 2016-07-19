@@ -28,6 +28,7 @@ Freeliner::Freeliner(){
 	numberBuff = "";
 
 	deco = Decorator();
+	layers = LayerManager();
 }
 
 
@@ -38,7 +39,9 @@ void Freeliner::update(){
 
 void Freeliner::draw(){
 	ofBackground(0);
+	layers.beginFbos();
 	decorate();
+	layers.render();
 	gui();
 }
 
@@ -65,15 +68,14 @@ void Freeliner::cycleGroups(){
 	cout << "freeliner.cpp: focus cycle to :  " << focusGroup << endl;
 }
 
-
 void Freeliner::decorate(){
-	// vector<PointGroup>::iterator this_group;
-	// for(this_group = pointGroups.begin(); this_group != pointGroups.end(); this_group++) {
-	//
-	// }
-	if(groupCount >= 0){
+	ofFbo* _fbo = layers.getFbo(0);
+	_fbo->begin();
+	ofClear(255,255,255, 0);
+	_fbo->end();
+	if(groupCount >= 0 && _fbo != nullptr){
 		for(int i = 0; i <= groupCount; i++){
-			deco.decorate(pointGroups[i], lerp);
+			deco.decorate(*_fbo, pointGroups[i], lerp);
 		}
 	}
 }
@@ -162,7 +164,6 @@ void Freeliner::mouseMove(int _x, int _y){
 	if(mouseEnabled){
 		cursor.set(_x, _y, 0);
 		if(snapping) mouseSnapping();
-
 	}
 }
 

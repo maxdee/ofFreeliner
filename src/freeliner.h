@@ -6,6 +6,7 @@
 #include "flDecorator.h"
 #include "flTools.h"
 #include "flPoint.h"
+#include "layerManager.h"
 
 class Freeliner {
 	private:
@@ -14,9 +15,8 @@ class Freeliner {
 		int groupCount;
 		int focusGroup;
 		int prevFocusGroup;
-
 		vector<PointGroup> pointGroups;
-
+		LayerManager layers;
 		ofVec3f cursor;
 
 		bool shifted;
