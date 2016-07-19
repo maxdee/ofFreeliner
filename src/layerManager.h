@@ -8,15 +8,15 @@
 class LayerManager {
 	private:
 		vector<Layer*> layerStack;
-		vector<FboLayer*> fboLayerStack;
+		// vector<FboLayer*> fboLayerStack;
 
 		//second pos?
 
 	public:
 		LayerManager();
 		void render();
-		ofFbo* getFbo(int);
-		void beginFbos();
+		FboLayer* getFboLayer(int);
+		void initFrames();
 };
 
 #endif

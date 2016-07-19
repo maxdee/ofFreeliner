@@ -1,12 +1,12 @@
 #include "layerManager.h"
 
 LayerManager::LayerManager(){
-	Layer* _f = new FboLayer();
-
-	fboLayerStack.push_back(static_cast<FboLayer*>(_f) );
-	layerStack.push_back( _f );
-
 	Layer* _o = new OutputLayer();
+
+	layerStack.push_back( new FboLayer() );
+	layerStack.push_back( _o );
+
+	layerStack.push_back( new WobblyFboLayer() );
 	layerStack.push_back( _o );
 }
 
@@ -19,19 +19,25 @@ void LayerManager::render(){
 	}
 }
 
-ofFbo* LayerManager::getFbo(int _i){
+FboLayer* LayerManager::getFboLayer(int _i){
 	int _index = 0;
-	vector<FboLayer*>::iterator _lyr;
-	for(_lyr = fboLayerStack.begin(); _lyr != fboLayerStack.end(); _lyr++) {
-		if(_i == _index) return (*_lyr)->getFbo();
-		_index++;
+	_i %= 2;
+	vector<Layer*>::iterator _lyr;
+	for(_lyr = layerStack.begin(); _lyr != layerStack.end(); _lyr++) {
+		if((*_lyr)->hasFbo()){
+			if(_index == _i) return dynamic_cast<FboLayer*>(*_lyr);
+			_index++;
+		}
 	}
 	return nullptr;
+	// return fboLayerStack[_i % fboLayerStack.size()];
 }
 
-void LayerManager::beginFbos(){
-	vector<FboLayer*>::iterator _lyr;
-	for(_lyr = fboLayerStack.begin(); _lyr != fboLayerStack.end(); _lyr++) {
-		(*_lyr)->beginFbo();
+void LayerManager::initFrames(){
+	vector<Layer*>::iterator _lyr;
+	for(_lyr = layerStack.begin(); _lyr != layerStack.end(); _lyr++) {
+		if((*_lyr)->hasFbo()){
+			(dynamic_cast<FboLayer*>(*_lyr))->initFrame();
+		}
 	}
 }

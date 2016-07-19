@@ -4,6 +4,7 @@
 #include "ofMain.h"
 #include "flPointGroup.h"
 #include "flTools.h"
+#include "layer.h"
 
 class Decorator {
 	private:
@@ -14,7 +15,7 @@ class Decorator {
 	public:
 		Decorator();
 
-		void decorate(ofFbo _fbo, PointGroup _pg, float _f);
+		void decorate(FboLayer* _layer, PointGroup _pg, float _f);
 };
 
 #endif

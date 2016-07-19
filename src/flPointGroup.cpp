@@ -137,7 +137,7 @@ void PointGroup::gui(ofVec3f _p, ofTrueTypeFont _tt){
 	else tag = _p;
 
 	glLineWidth(1);
-	ofCircle(tag.x, tag.y, 10);
+	ofDrawCircle(tag.x, tag.y, 10);
 	_tt.drawString(ofToString(ident), tag.x-(25+(ident>9)*12), tag.y+7);
 	ofPopStyle();
 }

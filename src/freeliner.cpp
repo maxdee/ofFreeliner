@@ -39,7 +39,7 @@ void Freeliner::update(){
 
 void Freeliner::draw(){
 	ofBackground(0);
-	layers.beginFbos();
+	layers.initFrames();
 	decorate();
 	layers.render();
 	gui();
@@ -69,13 +69,10 @@ void Freeliner::cycleGroups(){
 }
 
 void Freeliner::decorate(){
-	ofFbo* _fbo = layers.getFbo(0);
-	_fbo->begin();
-	ofClear(255,255,255, 0);
-	_fbo->end();
-	if(groupCount >= 0 && _fbo != nullptr){
+	// FboLayer* _fbo = layers.getFboLayer(0);
+	if(groupCount >= 0){
 		for(int i = 0; i <= groupCount; i++){
-			deco.decorate(*_fbo, pointGroups[i], lerp);
+			deco.decorate(layers.getFboLayer(i), pointGroups[i], lerp);
 		}
 	}
 }
@@ -229,7 +226,7 @@ void Freeliner::gui(){
 	if(snapped) ofSetColor(0,255,0);
 	else ofSetColor(255,0,0);
 	//ofFill();
-	ofCircle(cursor.x, cursor.y, 5);
+	ofDrawCircle(cursor.x, cursor.y, 5);
 	if(focusGroup > -1){
 		pointGroups[focusGroup].gui(cursor, font);
 	}
