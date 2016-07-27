@@ -42,6 +42,7 @@ Layer* FboLayer::apply(Layer* _layer){
   else if((*_layer).hasFbo()){
     FboLayer _f = *(dynamic_cast<FboLayer*>(_layer));
     _f.begin();
+    // ofSetBlendMode(OF_)
     fbo.draw(0,0);
     _f.end();
     return _layer;

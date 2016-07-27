@@ -13,9 +13,11 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	
+	for(int i = 0; i < 1000; i++){
+	ofDrawCircle(ofRandom(0,ofGetWindowWidth()), ofRandom(0,ofGetWindowHeight()),1,1);
+}
 	freeLiner.draw();
-	
+
 }
 
 //--------------------------------------------------------------
@@ -59,6 +61,6 @@ void ofApp::gotMessage(ofMessage msg){
 }
 
 //--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
+void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
